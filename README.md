@@ -22,8 +22,8 @@ No mainstream EDR/SIEM currently ships out-of-the-box detection for this attack 
 
 ## Contributors
 
-- [Hema](https://github.com/Hemashankar19)
-- [Charan](https://github.com/ankamteja)
+- [Muni Hema Shankar](https://github.com/Hemashankar19)
+- [Ankam Charan Teja](https://github.com/ankamteja)
 
 ## References
 
