@@ -20,7 +20,7 @@ Get the knowledge and tooling in place before building anything.
 - [ ] Understand the concepts: dMSA vs gMSA vs regular service account; Kerberos TGT/TGS and the PAC; AD OUs and ACL delegation.
 - [ ] Pick a hypervisor (Hyper-V / VMware / VirtualBox / Proxmox) with enough RAM/disk for a DC + a client VM.
 - [ ] Obtain a Windows Server 2025 evaluation ISO and a Windows client ISO.
-- [x] Repo workflow set up (fork + upstream, branches, PRs). ✅
+- [x] Repo workflow set up (fork + upstream, branches, PRs). 
 
 **Exit criteria:** can explain the attack in plain English; working VMs ready to build on.
 
