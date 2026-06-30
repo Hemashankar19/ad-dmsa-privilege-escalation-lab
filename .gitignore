@@ -1,0 +1,37 @@
+# --- Secrets / credentials (NEVER commit) ---
+*.kirbi
+*.ccache
+*.pfx
+*.key
+*.pem
+secrets*
+credentials*
+*password*
+.env
+
+# --- Lab artifacts / large binaries ---
+*.vhd
+*.vhdx
+*.iso
+*.vmdk
+*.ova
+*.zip
+
+# --- Captured telemetry / evidence (keep curated samples only, by hand) ---
+*.evtx
+*.pcap
+*.pcapng
+raw-logs/
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# --- Python (enumeration / tooling) ---
+__pycache__/
+*.pyc
+.venv/
+venv/
