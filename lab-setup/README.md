@@ -1,6 +1,5 @@
 # lab-setup
 
-**Owner:** Hema (offense / lab builder)
 
 Scripts and docs to stand up a deliberately vulnerable Windows Server 2025 Active Directory lab that reproduces the dMSA BadSuccessor conditions.
 
