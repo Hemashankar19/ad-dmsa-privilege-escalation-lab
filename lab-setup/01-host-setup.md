@@ -63,9 +63,43 @@ virsh -c qemu:///system net-list --all
 
 DC01 points DNS at itself (10.10.10.10). Client points DNS at the DC.
 
+## Create the DC VM
+
+Stage the Server 2025 evaluation ISO in the pool directory
+(`/var/lib/libvirt/images/`), then create the VM:
+
+```bash
+virt-install --connect qemu:///system \
+  --name DC01 \
+  --memory 4096 --vcpus 2 --cpu host \
+  --disk path=/var/lib/libvirt/images/DC01.qcow2,size=60,bus=sata,format=qcow2 \
+  --cdrom /var/lib/libvirt/images/<server-2025-eval>.iso \
+  --network network=lab-isolated,model=e1000e \
+  --os-variant win2k25 \
+  --graphics spice --video qxl \
+  --noautoconsole
+```
+
+Notes on the deliberate choices:
+
+- **`bus=sata`** for the disk and **`model=e1000e`** for the NIC so the Windows
+  installer sees both with its built-in drivers — no VirtIO driver injection
+  needed. (VirtIO is faster; swap it in later if you want the perf.)
+- **`--os-variant win2k25`** sets Server 2025 defaults (requires a recent
+  `osinfo-db`; verify with `osinfo-query os | grep win2k25`).
+- **`format=qcow2`** — thin/growable disk, not a full 60 GB up front.
+- Network is the **isolated** `lab-isolated`, so the VM has no path to the
+  internet and cannot pull Windows Updates.
+
+Open the console (`virt-manager` -> DC01) to run Windows Setup. Pick
+**Standard Evaluation (Desktop Experience)** — the GUI edition needed for
+ADUC / `dsacls`.
+
 ## Status
 
 - [x] KVM/libvirt stack installed, `libvirtd` active, user in `libvirt` group
 - [x] `lab-isolated` network defined, started, autostart on
-- [ ] Server 2025 ISO staged in `/var/lib/libvirt/images/`
-- [ ] DC01 VM created and installed
+- [x] Server 2025 ISO staged in `/var/lib/libvirt/images/`
+- [x] DC01 VM created; Windows Setup in progress
+- [ ] Static IP, host rename, Windows Update disabled
+- [ ] Clean snapshot `01-clean-os` taken
