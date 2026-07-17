@@ -155,5 +155,5 @@ attack reproductions run against. Do not let the VM update off this build.
 - [x] DC01 VM created; Windows Server 2025 Desktop Experience installed, at desktop
 - [x] Static IP 10.10.10.10, DNS-to-self, host renamed DC01
 - [x] Windows Update disabled, build number recorded (26100)
-- [ ] Clean snapshot `01-clean-os` taken
-- [ ] DC promotion (forest `dmsalab.local`) — next doc
+- [x] Clean snapshot `01-clean-os` taken (powered-off, pre-domain)
+- [x] DC promotion (forest `dmsalab.local`) — see [`02-dc-promotion.md`](02-dc-promotion.md)
