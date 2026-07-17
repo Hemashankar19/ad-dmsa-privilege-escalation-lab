@@ -135,13 +135,25 @@ Then take a clean pre-domain snapshot from the host:
 virsh -c qemu:///system snapshot-create-as DC01 01-clean-os "clean OS, pre-domain"
 ```
 
+### Pinned baseline (recorded)
+
+| Field            | Value                                    |
+|------------------|------------------------------------------|
+| OS build         | **26100**                                |
+| Product          | Windows Server 2025 Standard Evaluation  |
+| Release version  | 2009                                     |
+| Windows Update   | disabled (`wuauserv` stopped + disabled) |
+
+Build 26100 is the RTM base for Server 2025; this is the frozen patch level the
+attack reproductions run against. Do not let the VM update off this build.
+
 ## Status
 
 - [x] KVM/libvirt stack installed, `libvirtd` active, user in `libvirt` group
 - [x] `lab-isolated` network defined, started, autostart on
 - [x] Server 2025 ISO staged in `/var/lib/libvirt/images/`
 - [x] DC01 VM created; Windows Server 2025 Desktop Experience installed, at desktop
-- [ ] Static IP 10.10.10.10, DNS-to-self, host renamed DC01
-- [ ] Windows Update disabled, build number recorded
+- [x] Static IP 10.10.10.10, DNS-to-self, host renamed DC01
+- [x] Windows Update disabled, build number recorded (26100)
 - [ ] Clean snapshot `01-clean-os` taken
 - [ ] DC promotion (forest `dmsalab.local`) — next doc
