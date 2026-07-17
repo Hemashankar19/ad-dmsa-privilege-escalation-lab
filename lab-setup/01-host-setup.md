@@ -93,13 +93,55 @@ Notes on the deliberate choices:
 
 Open the console (`virt-manager` -> DC01) to run Windows Setup. Pick
 **Standard Evaluation (Desktop Experience)** — the GUI edition needed for
-ADUC / `dsacls`.
+ADUC / `dsacls`. Set the built-in **Administrator** password at first boot.
+
+## Base OS config (before promoting the DC)
+
+Run in an elevated PowerShell on DC01. Adapter is `Ethernet` by default
+(confirm with `Get-NetAdapter`).
+
+Static IP, with DNS pointed at itself (a DC must resolve its own domain):
+
+```powershell
+New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 10.10.10.10 -PrefixLength 24 -DefaultGateway 10.10.10.1
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 10.10.10.10
+```
+
+Disable Windows Update to pin the patch baseline (the isolated network already
+blocks it; this makes it explicit so the BadSuccessor primitive can't be
+patched out mid-project):
+
+```powershell
+Stop-Service wuauserv
+Set-Service wuauserv -StartupType Disabled
+```
+
+Rename the host and reboot:
+
+```powershell
+Rename-Computer -NewName "DC01" -Restart
+```
+
+After reboot, record the exact build number (part of the pinned baseline):
+
+```powershell
+hostname
+Get-ComputerInfo | Select-Object OsBuildNumber, WindowsProductName, OsHardwareAbstractionLayer
+```
+
+Then take a clean pre-domain snapshot from the host:
+
+```bash
+virsh -c qemu:///system snapshot-create-as DC01 01-clean-os "clean OS, pre-domain"
+```
 
 ## Status
 
 - [x] KVM/libvirt stack installed, `libvirtd` active, user in `libvirt` group
 - [x] `lab-isolated` network defined, started, autostart on
 - [x] Server 2025 ISO staged in `/var/lib/libvirt/images/`
-- [x] DC01 VM created; Windows Setup in progress
-- [ ] Static IP, host rename, Windows Update disabled
+- [x] DC01 VM created; Windows Server 2025 Desktop Experience installed, at desktop
+- [ ] Static IP 10.10.10.10, DNS-to-self, host renamed DC01
+- [ ] Windows Update disabled, build number recorded
 - [ ] Clean snapshot `01-clean-os` taken
+- [ ] DC promotion (forest `dmsalab.local`) — next doc
